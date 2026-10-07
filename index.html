@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Filippo Di Valentin â I miei libri preferiti</title>
+  <meta name="description" content="La libreria personale di Filippo Di Valentin: i suoi libri preferiti, da Baricco a Kafka, in una vetrina che scorre." />
+  <meta name="author" content="Filippo Di Valentin" />
+  <meta property="og:title" content="Filippo Di Valentin â I miei libri preferiti" />
+  <meta property="og:description" content="La libreria personale di Filippo Di Valentin: una vetrina dei suoi libri preferiti." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://books.google.com/books/content?id=AAIHWJhF-rwC&amp;printsec=frontcover&amp;img=1&amp;zoom=1" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%23fff' font-family='serif'%3EF%3C/text%3E%3C/svg%3E" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      touch-action: pan-y;
+      overscroll-behavior: none;
+      -webkit-user-select: none;
+      user-select: none;
+      background:
+        radial-gradient(ellipse 160% 120% at 50% -20%, #171238 0%, transparent 60%),
+        radial-gradient(ellipse 130% 100% at 80% 110%, #14213f 0%, transparent 55%),
+        radial-gradient(ellipse 120% 90% at 20% 90%, #1d1130 0%, transparent 50%),
+        #01010a;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      font-family: Georgia, "Times New Roman", serif;
+      position: relative;
+    }
+    /* Campo di stelle generato via JS */
+    #stars {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+    .star {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+    }
+    #nebula {
+      position: fixed;
+      inset: -20%;
+      z-index: -2;
+      pointer-events: none;
+      filter: blur(40px);
+      opacity: 0.85;
+    }
+    .galaxy {
+      position: absolute;
+      border-radius: 50%;
+      mix-blend-mode: screen;
+    }
+    /* Galassia spirale grande, viola-azzurra, in alto a destra */
+    .galaxy.g1 {
+      width: 46vw;
+      height: 26vw;
+      left: 62%;
+      top: 8%;
+      transform: rotate(-28deg);
+      background:
+        radial-gradient(ellipse at center, rgba(255, 235, 255, 0.55) 0%, transparent 12%),
+        radial-gradient(ellipse at center, rgba(196, 154, 255, 0.38) 0%, transparent 45%),
+        radial-gradient(ellipse 100% 55% at 50% 50%, rgba(120, 90, 220, 0.30) 0%, transparent 60%),
+        radial-gradient(ellipse 140% 40% at 50% 50%, rgba(90, 130, 220, 0.18) 30%, transparent 75%);
+      box-shadow: 0 0 10vw 3vw rgba(140, 100, 220, 0.12);
+    }
+    /* Seconda galassia piÃ¹ piccola, tinta calda, in basso a sinistra */
+    .galaxy.g2 {
+      width: 30vw;
+      height: 17vw;
+      left: 4%;
+      top: 68%;
+      transform: rotate(15deg);
+      background:
+        radial-gradient(ellipse at center, rgba(255, 240, 225, 0.4) 0%, transparent 14%),
+        radial-gradient(ellipse at center, rgba(255, 170, 140, 0.25) 0%, transparent 50%),
+        radial-gradient(ellipse 120% 45% at 50% 50%, rgba(200, 110, 140, 0.16) 30%, transparent 70%);
+      opacity: 0.8;
+    }
+    /* Terza micro-galassia fredda al centro-sinistra */
+    .galaxy.g3 {
+      width: 22vw;
+      height: 13vw;
+      left: 30%;
+      top: 76%;
+      transform: rotate(-12deg);
+      background:
+        radial-gradient(ellipse at center, rgba(220, 240, 255, 0.35) 0%, transparent 16%),
+        radial-gradient(ellipse at center, rgba(110, 170, 255, 0.22) 0%, transparent 55%);
+      opacity: 0.7;
+    }
+    /* Galassie extra, molto sfocate e discrete */
+    .galaxy.g4 {
+      width: 34vw;
+      height: 20vw;
+      left: 55%;
+      top: 62%;
+      transform: rotate(40deg);
+      background:
+        radial-gradient(ellipse at center, rgba(255, 245, 255, 0.30) 0%, transparent 15%),
+        radial-gradient(ellipse at center, rgba(160, 120, 230, 0.22) 0%, transparent 50%),
+        radial-gradient(ellipse 130% 50% at 50% 50%, rgba(100, 80, 200, 0.14) 30%, transparent 70%);
+      opacity: 0.55;
+    }
+    .galaxy.g5 {
+      width: 24vw;
+      height: 15vw;
+      left: 12%;
+      top: 12%;
+      transform: rotate(-40deg);
+      background:
+        radial-gradient(ellipse at center, rgba(230, 245, 255, 0.28) 0%, transparent 15%),
+        radial-gradient(ellipse at center, rgba(120, 180, 240, 0.18) 0%, transparent 55%),
+        radial-gradient(ellipse 120% 45% at 50% 50%, rgba(80, 150, 220, 0.12) 30%, transparent 70%);
+      opacity: 0.5;
+    }
+    .galaxy.g6 {
+      width: 18vw;
+      height: 11vw;
+      left: 78%;
+      top: 38%;
+      transform: rotate(25deg);
+      background:
+        radial-gradient(ellipse at center, rgba(255, 235, 220, 0.25) 0%, transparent 16%),
+        radial-gradient(ellipse at center, rgba(230, 140, 160, 0.14) 0%, transparent 55%);
+      opacity: 0.45;
+    }
+    /* Banda tipo Via Lattea che attraversa il cielo in diagonale */
+    .milkyway {
+      position: fixed;
+      width: 160vw;
+      height: 24vw;
+      left: -20vw;
+      top: 18%;
+      z-index: -2;
+      transform: rotate(-14deg);
+      transform-origin: center;
+      pointer-events: none;
+      background: linear-gradient(to right,
+        transparent 0%,
+        rgba(200, 210, 255, 0.05) 20%,
+        rgba(190, 175, 255, 0.10) 45%,
+        rgba(255, 240, 230, 0.09) 60%,
+        rgba(170, 200, 255, 0.06) 80%,
+        transparent 100%);
+      filter: blur(18px);
+    }
+    .brand {
+      position: fixed;
+      top: 1.2rem;
+      left: 1.4rem;
+      z-index: 10;
+      cursor: pointer;
+      font-family: "SF Mono", "Fira Code", "Cascadia Code", Consolas, "Courier New", monospace;
+      color: #fff;
+      font-size: 1rem;
+      letter-spacing: 0.05em;
+      user-select: none;
+      text-shadow:
+        0 0 6px rgba(255, 255, 255, 0.9),
+        0 0 14px rgba(180, 200, 255, 0.7),
+        0 0 28px rgba(140, 120, 255, 0.5);
+      animation: shine 3.5s ease-in-out infinite;
+    }
+    @keyframes shine {
+      0%, 100% { text-shadow: 0 0 6px rgba(255,255,255,0.9), 0 0 14px rgba(180,200,255,0.7), 0 0 28px rgba(140,120,255,0.5); }
+      50% { text-shadow: 0 0 4px rgba(255,255,255,0.6), 0 0 10px rgba(180,200,255,0.45), 0 0 20px rgba(140,120,255,0.3); }
+    }
+    .carousel {
+      /* La fila occupa solo la parte centrale: ai lati restano cielo e chevron */
+      width: calc(100vw - 10rem);
+      margin: 0 auto;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 2rem, #000 calc(100% - 2rem), transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0, #000 2rem, #000 calc(100% - 2rem), transparent 100%);
+    }
+    .track {
+      display: flex;
+      width: max-content;
+      will-change: transform;
+    }
+    .nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 2.6rem;
+      line-height: 1;
+      padding: 0.4rem 0.6rem;
+      font-family: "SF Mono", Consolas, monospace;
+      cursor: pointer;
+      user-select: none;
+      opacity: 0.9;
+    }
+    .nav:hover { opacity: 1; }
+    .nav.prev { left: 0.8rem; }
+    .nav.next { right: 0.8rem; }
+    .book {
+      height: 44vh;
+      max-height: 420px;
+      margin: 0 1.8vw;
+      flex-shrink: 0;
+      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.08);
+      border-radius: 2px;
+      object-fit: cover;
+    }
+    /* Testo per i motori di ricerca (non visibile) */
+    .visually-hidden {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+    /* --- Modalità profilo: schermo nero con la foto --- */
+    #profile {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      background: #01010a;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1.5s ease-in-out;
+      cursor: pointer;
+    }
+    #profile.on {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #profile img {
+      position: absolute;
+      top: calc(25vh - 4rem);
+      left: calc(25vw - 4rem);
+      width: 8rem;
+      border-radius: 4px;
+      box-shadow: 0 6px 30px rgba(255, 255, 255, 0.18);
+      opacity: 0;
+      transform: translateY(6px);
+      /* Chiusura rapida: la foto scompare subito quando si torna ai libri */
+      transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+    }
+    #profile.on img {
+      opacity: 1;
+      transform: translateY(0);
+      /* Apertura rapida */
+      transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div id="nebula">
+    <div class="galaxy g1"></div>
+    <div class="galaxy g2"></div>
+    <div class="galaxy g3"></div>
+    <div class="galaxy g4"></div>
+    <div class="galaxy g5"></div>
+    <div class="galaxy g6"></div>
+  </div>
+  <div class="milkyway"></div>
+  <div id="stars"></div>
+  <span class="brand" aria-label="Filippo Di Valentin">Filippo Di Valentin</span>
+  <h1 class="visually-hidden">Filippo Di Valentin â I miei libri preferiti</h1>
+
+  <div class="carousel" aria-label="Copertine dei miei libri preferiti, in ordine alfabetico">
+    <div class="track" id="track"></div>
+  </div>
+  <button class="nav prev" id="navPrev" aria-label="Indietro">&#8249;</button>
+  <button class="nav next" id="navNext" aria-label="Avanti">&#8250;</button>
+
+  <noscript>
+    <p>Libri preferiti di Filippo Di Valentin: L'arte della vittoria, Beautiful Music, La casa degli sguardi, Cento novelle, Cesare, Confidenza, La concessione del telefono, Il coraggio della veritÃ , Il destino dei popoli, Ebano, L'economia dei poveri, Gli eroi della guerra di Troia, Greco cerca greca, Hanno tutti ragione, L'idea russa, Le intermittenze della morte, L'irresistibile attrazione della gravitÃ , Il magico studio fotografico di Hirasaka, La metamorfosi, Momenti di trascurabile felicitÃ , Momenti di trascurabile infelicitÃ , Nella carne, La notte della cometa, L'ordine del tempo, Paesi tuoi, Il principe, Il processo, Il richiamo della foresta, Seta, La simmetria dei desideri, Lo squalificato, Storia dell'Iran, Vite parallele: Alessandro e Cesare, Una vita.</p>
+  </noscript>
+
+  <script>
+    // Libri in ordine alfabetico di titolo (articoli esclusi dal ordinamento)
+    const books = [
+      ["L'arte della vittoria", "Phil Knight", "https://books.google.com/books/content?id=C5YPDAAAQBAJ&printsec=frontcover&img=1&zoom=3"],
+      ["Beautiful Music", "Michael Zadoorian", "images/zadoorian.jpg"],
+      ["La casa degli sguardi", "Daniele Mencarelli", "https://books.google.com/books/content?id=TXFIDwAAQBAJ&printsec=frontcover&img=1&zoom=3"],
+      ["Cento novelle", "Luigi Pirandello", "images/pirandello.jpg"],
+      ["Cesare", "Alberto Angela", "https://books.google.com/books/content?id=8iSTEQAAQBAJ&printsec=frontcover&img=1&zoom=3"],
+      ["Confidenza", "Domenico Starnone", "https://books.google.com/books/content?id=zOy9DwAAQBAJ&printsec=frontcover&img=1&zoom=3"],
+      ["La concessione del telefono", "Andrea Camilleri", "images/concessione.jpg"],
+      ["Il coraggio della veritÃ ", "Michel Foucault", "images/focault.jpg"],
+      ["Il destino dei popoli", "Dario Fabbri", "https://books.google.com/books/content?id=t2GOEQAAQBAJ&printsec=frontcover&img=1&zoom=3"],
+      ["Ebano", "Ryszard KapuÅciÅski", "images/ebano.jpg"],
+      ["L'economia dei poveri", "Abhijit V. Banerjee ed Esther Duflo", "https://books.google.com/books/content?id=xxJ20PiLobMC&printsec=frontcover&img=1&zoom=3"],
+      ["Gli eroi della guerra di Troia", "Giorgio IeranÃ²", "images/guerratroia.jpg"],
+      ["Greco cerca greca", "Friedrich DÃ¼rrenmatt", "https://books.google.com/books/content?id=1CIqEQAAQBAJ&printsec=frontcover&img=1&zoom=3"],
+      ["Hanno tutti ragione", "Paolo Sorrentino", "images/sorrentino.jpg"],
+      ["L'idea russa", "Bengt Jangfeldt", "https://books.google.com/books/content?id=j4R0EAAAQBAJ&printsec=frontcover&img=1&zoom=3"],
+      ["Le intermittenze della morte", "JosÃ© Saramago", "images/intermittenze.jpg"],
+      ["L'irresistibile attrazione della gravitÃ ", "Luciano Rezzolla", "images/rezzolla.jpg"],
+      ["Il magico studio fotografico di Hirasaka", "Sanaka Hiiragi", "images/hirasaka.jpg"],
+      ["La metamorfosi", "Franz Kafka", "images/metamorfosi.jpg"],
+      ["Momenti di trascurabile felicitÃ ", "Francesco Piccolo", "https://books.google.com/books/content?id=mFf3bQZmX4gC&printsec=frontcover&img=1&zoom=3"],
+      ["Momenti di trascurabile infelicitÃ ", "Francesco Piccolo", "images/infelicita.jpg"],
+      ["Nella carne", "David Szalay", "images/szalay.jpg"],
+      ["La notte della cometa", "Sebastiano Vassalli", "images/vassalli.jpg"],
+      ["L'ordine del tempo", "Carlo Rovelli", "images/rovelli.jpg"],
+      ["Paesi tuoi", "Cesare Pavese", "images/paesituoi.jpg"],
+      ["Il principe", "NiccolÃ² Machiavelli", "images/principe.jpg"],
+      ["Il processo", "Franz Kafka", "images/processo.jpg"],
+      ["Il richiamo della foresta", "Jack London", "images/richiamo.jpg"],
+      ["Seta", "Alessandro Baricco", "images/seta.jpg"],
+      ["La simmetria dei desideri", "Eshkol Nevo", "images/simmetria.jpg"],
+      ["Lo squalificato", "Osamu Dazai", "images/squalificato.jpeg"],
+      ["Storia dell'Iran", "Ervand Abrahamian", "images/storiairan.jpg"],
+      ["Vite parallele: Alessandro e Cesare", "Plutarco", "images/plutarco.jpeg"],
+      ["Una vita", "Italo Svevo", "images/svevo.jpeg"],
+    ];
+
+    function makeBook([title, author, img]) {
+      const el = document.createElement("img");
+      el.className = "book";
+      el.src = img;
+      el.alt = title + " â " + author;
+      el.loading = "lazy";
+      let triedFallback = false;
+      // Elimina copertine non disponibili (errore) o "bande bianche":
+      // le copertine vere sono verticali; i segnaposto sono quadrati/bianchi
+      el.onerror = () => el.remove();
+      el.onload = () => {
+        const ratio = el.naturalHeight / el.naturalWidth;
+        if (ratio < 1.05) {
+          if (triedFallback || img.indexOf("books.google.com") === -1) el.remove();
+          else { triedFallback = true; el.src = img.replace("&zoom=3", "&zoom=1"); }
+        }
+      };
+      return el;
+    }
+
+    const track = document.getElementById("track");
+    const carousel = document.querySelector(".carousel");
+    // La fila viene duplicata per creare un loop infinito senza interruzioni
+    for (let round = 0; round < 2; round++) {
+      books.forEach(b => track.appendChild(makeBook(b)));
+    }
+
+    // --- Scorrimento automatico fluido + navigazione avanti/indietro ---
+    // VelocitÃ  in pixel al secondo (negativa = verso sinistra)
+    const BASE_SPEED = 85;    // scorrimento automatico
+    const NAV_SPEED = 450;     // velocitÃ  quando si tiene premuta una freccia
+    let speed = BASE_SPEED;
+    let offset = 0;
+    let lastTime = 0;
+
+    function render() {
+      const hw = track.scrollWidth / 2;
+      if (hw > 0) {
+        // Riporta l'offset sempre entro un giro: loop infinito stabile
+        if (offset <= -hw) offset += hw;
+        if (offset > 0) offset -= hw;
+      }
+      track.style.transform = "translateX(" + offset.toFixed(2) + "px)";
+    }
+
+    function loop(now) {
+      if (!lastTime) lastTime = now;
+      const dt = Math.min((now - lastTime) / 1000, 0.05); // delta sempre piccolo: niente scatti
+      lastTime = now;
+      offset -= speed * dt;
+      render();
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    // Navigazione con le frecce: tieni premuto per scorrere, rilascia per tornare al ritmo base
+    const navPrev = document.getElementById("navPrev");
+    const navNext = document.getElementById("navNext");
+    const press = (el, dir) => {
+      const start = () => { speed = NAV_SPEED * dir; };
+      const stop = () => { speed = BASE_SPEED; };
+      el.addEventListener("pointerdown", (e) => { e.preventDefault(); start(); });
+      el.addEventListener("pointerup", stop);
+      el.addEventListener("pointerleave", stop);
+      el.addEventListener("pointercancel", stop);
+    };
+    press(navNext, 1);   // freccia destra: vai avanti (verso sinistra)
+    press(navPrev, -1);  // freccia sinistra: torna indietro
+
+    // --- Blocco zoom ---
+    // Ctrl + rotella / pinch su trackpad
+    document.addEventListener("wheel", (e) => {
+      if (e.ctrlKey) e.preventDefault();
+    }, { passive: false });
+    // Pinch su touch screen
+    document.addEventListener("touchmove", (e) => {
+      if (e.touches.length > 1) e.preventDefault();
+    }, { passive: false });
+    // Gesture di Safari (desktop e iOS)
+    document.addEventListener("gesturestart", (e) => e.preventDefault());
+    // Scorciatoie Ctrl + / Ctrl - / Ctrl 0 / Ctrl wheel reset
+    document.addEventListener("keydown", (e) => {
+      if (e.ctrlKey && ["+", "-", "=", "0", "_"].includes(e.key)) e.preventDefault();
+    });
+
+    // --- Modalità profilo: clic sul nome -> schermo nero con foto ---
+    const profile = document.createElement("div");
+    profile.id = "profile";
+    const profilePhoto = document.createElement("img");
+    profilePhoto.src = "images/profilo.png";
+    profilePhoto.alt = "Foto di Filippo Di Valentin";
+    profile.appendChild(profilePhoto);
+    document.body.appendChild(profile);
+    document.querySelector(".brand").addEventListener("click", () => profile.classList.add("on"));
+    profile.addEventListener("click", () => profile.classList.remove("on"));
+
+    // --- Campo stellare: stelle casuali con tremolio ---
+    (function makeStars() {
+      const field = document.getElementById("stars");
+      const n = 140;
+      for (let i = 0; i < n; i++) {
+        const s = document.createElement("div");
+        s.className = "star";
+        const size = Math.random() < 0.85 ? 1 : 2;
+        s.style.width = s.style.height = size + "px";
+        s.style.left = (Math.random() * 100) + "%";
+        s.style.top = (Math.random() * 100) + "%";
+        if (Math.random() < 0.15) {
+          const tints = ["#aac8ff", "#ffd9a0", "#ffb8b8", "#e6d2ff"];
+          s.style.background = tints[Math.floor(Math.random() * tints.length)];
+        }
+        if (size === 1 && Math.random() < 0.4) s.style.opacity = "0.6";
+        field.appendChild(s);
+      }
+    })();
+  </script>
+</body>
+</html>
