@@ -298,20 +298,28 @@
     }
     /* --- Schermi piccoli (telefono): misure adattate per non sballare --- */
     @media (max-width: 600px) {
+      /* L'altezza reale del telefono (barra Safari compresa): la seconda
+         pagina non deve piu' "intravedersi" sotto la splash */
+      html, body, #pages, #pages section { height: 100dvh; }
+      .carousel {
+        width: calc(100vw - 3rem);
+      }
       #splash .splash-box {
         left: 8vw;
+        right: 8vw;
       }
       #splash .splash-name {
         /* Su telefono il nome va spezzato su più righe, altrimenti sborda */
         white-space: normal;
         line-height: 1.8;
-        font-size: 4.6vw;
+        font-size: 4.4vw;
       }
       #splash .splash-photo {
         width: 6.5rem;
       }
       #splash .splash-link {
-        font-size: 0.75rem;
+        font-size: 0.52rem;
+        white-space: nowrap;
       }
       #splash .chevron {
         bottom: 1.8rem;
@@ -327,8 +335,8 @@
         left: 1rem;
       }
       .book {
-        height: 38vh;
-        margin: 0 2.4vw;
+        height: 28vh;
+        margin: 0 2vw;
       }
     }
   </style>
@@ -446,6 +454,8 @@
     let lastTime = 0;
     // Pausa dopo una navigazione manuale col trackpad
     let manualUntil = 0;
+    // Velocità del "lancio" della lista (touch): inerzia dopo che il dito si alza
+    let flingVel = 0;
 
     function render() {
       const hw = track.scrollWidth / 2;
@@ -461,6 +471,12 @@
       if (!lastTime) lastTime = now;
       const dt = Math.min((now - lastTime) / 1000, 0.05); // delta sempre piccolo: niente scatti
       lastTime = now;
+      // Lancio inerziale della lista (touch): continua da sola e rallenta piano
+      if (flingVel !== 0) {
+        offset += flingVel * dt;
+        flingVel *= Math.exp(-3.5 * dt);
+        if (Math.abs(flingVel) < 15) flingVel = 0;
+      }
       // Niente scorrimento automatico durante la navigazione manuale col trackpad
       if (now > manualUntil) offset -= speed * dt;
       render();
@@ -508,12 +524,16 @@
     // Swipe verticale = cambia pagina; drag orizzontale = naviga le copertine
     let touchX = null, touchY = null;
     let gesture = null; // null | "v" (verticale) | "h" (orizzontale)
+    let touchVel = 0;   // velocità del dito (px/s), per il lancio
+    let touchLast = 0;  // istante dell'ultimo movimento
 
     document.addEventListener("touchstart", (e) => {
       if (e.touches.length === 1) {
         touchX = e.touches[0].clientX;
         touchY = e.touches[0].clientY;
         gesture = null;
+        touchVel = 0;
+        touchLast = performance.now();
       }
     }, { passive: true });
 
@@ -528,10 +548,17 @@
         else if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)) gesture = "v";
       }
       if (gesture === "h") {
-        // Drag della lista: la segue col dito, in tempo reale
+        // Drag della lista: la segue col dito in tempo reale (stessa direzione)
         e.preventDefault();
-        offset -= dx;
+        offset += dx;
         manualUntil = performance.now() + 1500;
+        // Memorizza la velocità istantanea del dito: servirà per il "lancio"
+        const now = performance.now();
+        if (touchLast > 0) {
+          const v = dx / Math.max((now - touchLast) / 1000, 0.001);
+          touchVel = 0.7 * touchVel + 0.3 * v; // media mobile: più stabile
+        }
+        touchLast = now;
         render();
         touchX = x; touchY = y;
       }
@@ -542,10 +569,12 @@
       if (gesture === "v") {
         const dy = touchY - e.changedTouches[0].clientY; // positivo = swipe verso l'alto
         if (Math.abs(dy) > 60) goTo(dy > 0 ? "library" : "splash");
+      } else if (gesture === "h") {
+        // Lancio: la lista continua col movimento del dito e rallenta da sola
+        flingVel = Math.max(-2600, Math.min(2600, touchVel));
       }
-      touchX = null; touchY = null; gesture = null;
+      touchX = null; touchY = null; gesture = null; touchVel = 0; touchLast = 0;
     }, { passive: true });
-    // --- Gesti touch (iPhone/iPad): un solo gestore per tutto ---
     // Gesture di Safari (desktop e iOS)
     document.addEventListener("gesturestart", (e) => e.preventDefault());
     // Scorciatoie Ctrl + / Ctrl - / Ctrl 0 / Ctrl wheel reset
