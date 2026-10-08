@@ -34,13 +34,25 @@
     /* --- Due pagine verticali: apertura e libreria --- */
     #pages {
       height: 100%;
-      will-change: transform;
-      transition: transform 1.1s cubic-bezier(0.65, 0, 0.35, 1);
-    }
-    #pages section {
-      height: 100%;
       position: relative;
       overflow: hidden;
+    }
+    #pages section {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    /* Le due pagine sono sovrapposte e si rincorrono verticalmente:
+       la splash esce in alto mentre la libreria entra dal basso */
+    #splash {
+      transform: translateY(0);
+      transition: transform 1.1s cubic-bezier(0.65, 0, 0.35, 1);
+      will-change: transform;
+    }
+    #library {
+      transform: translateY(100%);
+      transition: transform 1.1s cubic-bezier(0.65, 0, 0.35, 1);
+      will-change: transform;
     }
     /* --- Pagina di apertura (splash) --- */
     #splash .splash-box {
@@ -298,9 +310,8 @@
     }
     /* --- Schermi piccoli (telefono): misure adattate per non sballare --- */
     @media (max-width: 600px) {
-      /* L'altezza reale del telefono (barra Safari compresa): la seconda
-         pagina non deve piu' "intravedersi" sotto la splash */
-      html, body, #pages, #pages section { height: 100dvh; }
+      /* L'altezza reale del telefono (barra Safari compresa) */
+      html, body, #pages { height: 100dvh; }
       .carousel {
         width: calc(100vw - 3rem);
       }
@@ -309,10 +320,11 @@
         right: 8vw;
       }
       #splash .splash-name {
-        /* Su telefono il nome va spezzato su più righe, altrimenti sborda */
-        white-space: normal;
+        /* Su telefono il nome resta su una riga: la dimensione scala
+           con la larghezza dello schermo per non toccare il bordo destro */
+        white-space: nowrap;
         line-height: 1.8;
-        font-size: 4.4vw;
+        font-size: 3.4vw;
       }
       #splash .splash-photo {
         width: 6.5rem;
@@ -486,14 +498,21 @@
 
     // --- Navigazione tra le due pagine: apertura <-> libreria ---
     // Solo due stati possibili: o l'una o l'altra, con scorrimento dolce
-    const pages = document.getElementById("pages");
     let page = "splash";          // pagina corrente
     let animating = false;        // true durante la transizione: input ignorato
+    const libraryPage = document.getElementById("library");
+    const splashPage = document.getElementById("splash");
     function goTo(target) {
       if (animating || page === target) return;
       page = target;
       animating = true;
-      pages.style.transform = target === "library" ? "translateY(-100%)" : "translateY(0)";
+      if (target === "library") {
+        splashPage.style.transform = "translateY(-100%)";  // splash esce in alto
+        libraryPage.style.transform = "translateY(0)";      // libreria entra dal basso
+      } else {
+        splashPage.style.transform = "translateY(0)";
+        libraryPage.style.transform = "translateY(100%)";
+      }
       setTimeout(() => { animating = false; }, 1100); // dura quanto la transizione CSS
     }
     document.getElementById("chevron").addEventListener("click", () => goTo("library"));
