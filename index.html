@@ -58,7 +58,7 @@
     #splash .splash-box {
       position: absolute;
       left: 13vw;   /* un po' più a sinistra rispetto alla seconda colonna */
-      top: 50%;
+      top: 56%;      /* leggermente sotto il centro */
       transform: translateY(-50%);
     }
     #splash .splash-name {
@@ -310,8 +310,6 @@
     }
     /* --- Schermi piccoli (telefono): misure adattate per non sballare --- */
     @media (max-width: 600px) {
-      /* L'altezza reale del telefono (barra Safari compresa) */
-      html, body, #pages { height: 100dvh; }
       .carousel {
         width: calc(100vw - 3rem);
       }
