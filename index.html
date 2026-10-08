@@ -504,21 +504,48 @@
         setTimeout(() => { wheelAcc = 0; }, 300); // si resetta se lo slittamento non continua
       }
     }, { passive: false });
-    // Swipe verticale su touch (iPhone/iPad)
-    let touchY0 = null;
+    // --- Gesti touch (iPhone/iPad): un solo gestore per tutto ---
+    // Swipe verticale = cambia pagina; drag orizzontale = naviga le copertine
+    let touchX = null, touchY = null;
+    let gesture = null; // null | "v" (verticale) | "h" (orizzontale)
+
     document.addEventListener("touchstart", (e) => {
-      if (e.touches.length === 1) touchY0 = e.touches[0].clientY;
+      if (e.touches.length === 1) {
+        touchX = e.touches[0].clientX;
+        touchY = e.touches[0].clientY;
+        gesture = null;
+      }
     }, { passive: true });
-    document.addEventListener("touchend", (e) => {
-      if (touchY0 === null) return;
-      const dy = touchY0 - e.changedTouches[0].clientY; // positivo = swipe verso l'alto
-      if (Math.abs(dy) > 60) goTo(dy > 0 ? "library" : "splash");
-      touchY0 = null;
-    }, { passive: true });
-    // Pinch su touch screen: bloccato
+
     document.addEventListener("touchmove", (e) => {
-      if (e.touches.length > 1) e.preventDefault();
+      if (e.touches.length > 1) { e.preventDefault(); return; } // pinch: bloccato
+      if (touchX === null) return;
+      const x = e.touches[0].clientX, y = e.touches[0].clientY;
+      const dx = x - touchX, dy = y - touchY;
+      // Decide il gesto una volta sola, appena il dito si muove abbastanza
+      if (!gesture) {
+        if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)) gesture = "h";
+        else if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)) gesture = "v";
+      }
+      if (gesture === "h") {
+        // Drag della lista: la segue col dito, in tempo reale
+        e.preventDefault();
+        offset -= dx;
+        manualUntil = performance.now() + 1500;
+        render();
+        touchX = x; touchY = y;
+      }
     }, { passive: false });
+
+    document.addEventListener("touchend", (e) => {
+      if (touchX === null) return;
+      if (gesture === "v") {
+        const dy = touchY - e.changedTouches[0].clientY; // positivo = swipe verso l'alto
+        if (Math.abs(dy) > 60) goTo(dy > 0 ? "library" : "splash");
+      }
+      touchX = null; touchY = null; gesture = null;
+    }, { passive: true });
+    // --- Gesti touch (iPhone/iPad): un solo gestore per tutto ---
     // Gesture di Safari (desktop e iOS)
     document.addEventListener("gesturestart", (e) => e.preventDefault());
     // Scorciatoie Ctrl + / Ctrl - / Ctrl 0 / Ctrl wheel reset
