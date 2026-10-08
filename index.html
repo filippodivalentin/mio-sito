@@ -296,6 +296,41 @@
       clip: rect(0 0 0 0);
       white-space: nowrap;
     }
+    /* --- Schermi piccoli (telefono): misure adattate per non sballare --- */
+    @media (max-width: 600px) {
+      #splash .splash-box {
+        left: 8vw;
+      }
+      #splash .splash-name {
+        /* Su telefono il nome va spezzato su più righe, altrimenti sborda */
+        white-space: normal;
+        line-height: 1.8;
+        font-size: 4.6vw;
+      }
+      #splash .splash-photo {
+        width: 6.5rem;
+      }
+      #splash .splash-link {
+        font-size: 0.75rem;
+      }
+      #splash .chevron {
+        bottom: 1.8rem;
+      }
+      .brand {
+        font-size: 0.6rem;
+        top: 0.9rem;
+        left: 1rem;
+      }
+      .brand-sub {
+        font-size: 0.6rem;
+        top: 1.9rem;
+        left: 1rem;
+      }
+      .book {
+        height: 38vh;
+        margin: 0 2.4vw;
+      }
+    }
   </style>
 </head>
 <body>
